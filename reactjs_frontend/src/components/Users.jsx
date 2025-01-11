@@ -10,6 +10,7 @@ const Users = ({ users }) => {
           users.map((user) => (
             <User username={user.username} key={user.username} />
           ))}
+        {users && users.length === 0 && <p>No active users</p>}
       </div>
     </div>
   );
