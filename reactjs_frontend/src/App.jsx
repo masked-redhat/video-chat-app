@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CurrentUsername from "./components/CurrentUsername";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Username from "./components/Username";
 import Users from "./components/Users";
 import Video from "./components/Video";
+import { connect } from "./socket/connect";
+import { socket } from "./socket";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -14,15 +16,15 @@ function App() {
   const localStream = useRef(),
     remoteStream = useRef();
 
+  useEffect(() => {
+    connect(setMessage, setUsername, setUsers);
+  }, []);
+
   return (
     <div className="flex flex-col gap-4 h-[95vh]">
       <Header />
       <main className="flex flex-col gap-3">
-        <Username
-          message={message}
-          setUsername={setUsername}
-          username={username}
-        />
+        <Username message={message} username={username} />
         <div className="flex gap-2">
           <Video streamRef={localStream} />
           <Video streamRef={remoteStream} />
@@ -31,13 +33,6 @@ function App() {
         <Users users={users} />
       </main>
       <Footer />
-      <button
-        onClick={(e) => {
-          console.log(localStream.current);
-        }}
-      >
-        click
-      </button>
     </div>
   );
 }

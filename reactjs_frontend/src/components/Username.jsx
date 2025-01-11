@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { socket } from "../socket";
 
-const Username = ({ setUsername, message, username }) => {
+const Username = ({ message, username }) => {
   const [inputUsername, setInputUsername] = useState("");
   return (
     <>
@@ -8,7 +9,7 @@ const Username = ({ setUsername, message, username }) => {
         className="w-full my-1 flex gap-3 *:rounded-md"
         onSubmit={(e) => {
           e.preventDefault();
-          setUsername(inputUsername);
+          socket.emit("set-username", inputUsername);
         }}
       >
         <input
