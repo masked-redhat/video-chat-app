@@ -1,9 +1,13 @@
 const CurrentUsername = ({ username }) => {
-  return username ? (
-    <p className="text-lg">
-      Current Username : <span className="font-semibold">{username}</span>
-    </p>
-  ) : null;
+  return (
+    <div>
+      {username ? (
+        <p className="text-lg">
+          Current Username : <span className="font-semibold">{username}</span>
+        </p>
+      ) : null}
+    </div>
+  );
 };
 
 export default CurrentUsername;
