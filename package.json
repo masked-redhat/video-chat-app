@@ -1,0 +1,21 @@
+{
+    "name": "video-chat",
+    "version": "1.0.0",
+    "description": "video chatting with webrtc and websockets",
+    "license": "ISC",
+    "author": "masked-redhat",
+    "type": "module",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon app.js"
+    },
+    "dependencies": {
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "video-chat": "file:"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.9"
+    }
+}
