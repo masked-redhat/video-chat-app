@@ -9,17 +9,20 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://video-chat-app-fqc5.onrender.com/",
+    methods: ["get", "post"],
   },
 });
 const port = env.port;
 
+app.use(express.static(path.join(__dirname, "reactjs_frontend/dist")));
+
 const users = {};
 const usernames = [];
 
-app.get("/", (req, res) => {
-    res.send("HTML File being made right now")
-})
+app.get("*", (_, res) => {
+  res.sendFile(path.join(__dirname, "reactjs_frontend/dist", "index.html"));
+});
 
 io.on("connection", (socket) => {
   User.createUser(users, socket.id);
