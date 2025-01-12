@@ -13,7 +13,6 @@ const startOffer = async (
 
   const offer = await peerConnection.current.createOffer();
 
-  console.log("Offer send: ", offer);
   socket.emit("make-offer", offer, id);
 };
 
@@ -31,16 +30,11 @@ const sendAnswer = async (
   await peerConnection.current.setOffer(offer);
   const answer = await peerConnection.current.createAnswer();
 
-  console.log("Offer recieved: ", offer);
-  console.log("answer sent: ", answer);
-
   socket.emit("send-answer", answer, id);
 };
 
 const getAnswer = async (peerConnection, answer) => {
   await peerConnection.current.setAnswer(answer);
-
-  console.log("answer recieved: ", answer);
 };
 
 const onCandidate = async (peerConnection, candidate) => {
