@@ -3,7 +3,7 @@ import { socket } from "../socket";
 export const connect = async (setMessage, setUsername, setUsers) => {
   socket.connect();
 
-  socket.on("username-error", (message) => {
+  socket.on("error", (message) => {
     setMessage(`Error: ${message}`);
   });
 
