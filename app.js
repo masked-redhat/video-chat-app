@@ -17,6 +17,10 @@ const port = env.port;
 const users = {};
 const usernames = [];
 
+app.get("/", (req, res) => {
+    res.send("HTML File being made right now")
+})
+
 io.on("connection", (socket) => {
   User.createUser(users, socket.id);
 
