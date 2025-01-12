@@ -61,6 +61,10 @@ class PeerConnection {
     this.pc.close();
   };
 
+  closed = () => {
+    return this.pc.signalingState === "closed";
+  };
+
   setRemoteId = (id) => {
     this.remoteId = id;
   };
