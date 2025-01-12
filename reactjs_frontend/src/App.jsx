@@ -18,9 +18,16 @@ function App() {
   const [localStream, setLocalStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
   const peerConnection = useRef();
+  const [conn, setConn] = useState();
 
   const localStreamElement = useRef(),
     remoteStreamElement = useRef();
+
+  const refresh = () => {
+    initializeSetup(setLocalStream, setRemoteStream);
+    localStreamElement.current.srcObject = localStream;
+    remoteStreamElement.current.srcObject = remoteStream;
+  };
 
   useEffect(() => {
     connect(setMessage, setUsername, setUsers);
@@ -34,7 +41,7 @@ function App() {
       localStreamElement.current.srcObject = localStream;
       remoteStreamElement.current.srcObject = remoteStream;
 
-      peerConnect(peerConnection, localStream, remoteStream);
+      peerConnect(peerConnection, localStream, remoteStream, setConn, refresh);
     }
   }, [localStream, remoteStream]);
 
@@ -47,21 +54,10 @@ function App() {
           <Video streamRef={localStreamElement} />
           <Video streamRef={remoteStreamElement} />
         </div>
-        <CurrentUsername username={username} />
-        <Users
-          users={users}
-          connection={peerConnection}
-          setMessage={setMessage}
-        />
+        <CurrentUsername username={username} connection={conn} />
+        <Users users={users} />
       </main>
       <Footer />
-      <button
-        onClick={() => {
-          console.log(peerConnection.current.pc);
-        }}
-      >
-        CLick
-      </button>
     </div>
   );
 }

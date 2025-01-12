@@ -2,10 +2,7 @@ import { socket } from "../socket";
 
 const User = (props) => {
   const handleCall = () => {
-    // if (props.connection) {
-    //   props.connection.close();
-    socket.emit("start-call", props.id);
-    // } else props.setMessage("Setting up connection, try again");
+      socket.emit("start-call", props.id);
   };
 
   return (
