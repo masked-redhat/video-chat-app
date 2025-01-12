@@ -7,8 +7,8 @@ import Users from "./components/Users";
 import Video from "./components/Video";
 import { connect } from "./socket/connect";
 import initializeSetup from "./scripts/streamLocal";
-import peerConnect from "./socket/peerConnection";
-import PeerConnection from "./scripts/peer2peer";
+import { peerConnect } from "./socket/peerConnection";
+import { socket } from "./socket";
 
 function App() {
   const [username, setUsername] = useState("");
@@ -36,13 +36,59 @@ function App() {
 
   // set the source object for video elements
   // when streams have been set
+  const handleStartOffer = async (id) => {
+    await peerConnect.startOffer(
+      peerConnection,
+      localStream,
+      remoteStream,
+      setConn,
+      id
+    );
+  };
+
+  const handleSendAnswer = async (offer, id) => {
+    await peerConnect.sendAnswer(
+      peerConnection,
+      localStream,
+      remoteStream,
+      setConn,
+      offer,
+      id
+    );
+  };
+
+  const handleGetAnswer = async (answer) => {
+    await peerConnect.getAnswer(peerConnection, answer);
+  };
+
+  const handleCandidate = async (candidate) => {
+    await peerConnect.onCandidate(peerConnection, candidate);
+  };
+
+  const handleEndCall = async () => {
+    await peerConnect.endCall(peerConnection, setConn);
+    refresh()
+  };
+
   useEffect(() => {
     if (localStream && remoteStream) {
       localStreamElement.current.srcObject = localStream;
       remoteStreamElement.current.srcObject = remoteStream;
 
-      peerConnect(peerConnection, localStream, remoteStream, setConn, refresh);
+      socket.on("start-offer", handleStartOffer);
+      socket.on("offer", handleSendAnswer);
+      socket.on("answer", handleGetAnswer);
+      socket.on("candidate", handleCandidate);
+      socket.on("end-call", handleEndCall);
     }
+
+    return () => {
+      socket.off("start-offer", handleStartOffer);
+      socket.off("offer", handleSendAnswer);
+      socket.off("answer", handleGetAnswer);
+      socket.off("candidate", handleCandidate);
+      socket.off("end-call", handleEndCall);
+    };
   }, [localStream, remoteStream]);
 
   return (

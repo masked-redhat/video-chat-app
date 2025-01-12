@@ -57,10 +57,8 @@ class PeerConnection {
       await this.pc.setRemoteDescription(this.answer);
   };
 
-  close = (localStream, remoteStream) => {
+  close = () => {
     this.pc.close();
-    localStream.getTracks().forEach((track) => track.stop());
-    remoteStream.getTracks().forEach((track) => track.stop());
   };
 
   setRemoteId = (id) => {
