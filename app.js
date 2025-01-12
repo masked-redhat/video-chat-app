@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-answer", (answer, socketId) => {
-    io.to(socketId).emit("answer", answer, socket.id);
+    io.to(socketId).emit("answer", answer);
   });
 
   socket.on("candidate", (candidate, socketId) => {
