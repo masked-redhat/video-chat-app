@@ -38,6 +38,11 @@ io.on("connection", (socket) => {
     io.to(socketId).emit("candidate", candidate);
   });
 
+  socket.on("end-call", (socketId) => {
+    socket.emit("end-call");
+    io.to(socketId).emit("end-call");
+  });
+
   socket.on("get-users", () => {
     socket.emit("users", User.getUsers(users, socket.id));
   });
