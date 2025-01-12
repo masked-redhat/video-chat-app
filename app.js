@@ -20,6 +20,24 @@ const usernames = [];
 io.on("connection", (socket) => {
   User.createUser(users, socket.id);
 
+  socket.on("start-call", (socketId) => {
+    if (users[socket.id] === null)
+      socket.emit("error", "Username not set, call cannot be made");
+    else socket.emit("start-offer", socketId);
+  });
+
+  socket.on("make-offer", (offer, socketId) => {
+    io.to(socketId).emit("offer", offer, socket.id);
+  });
+
+  socket.on("send-answer", (answer, socketId) => {
+    io.to(socketId).emit("answer", answer, socket.id);
+  });
+
+  socket.on("candidate", (candidate, socketId) => {
+    io.to(socketId).emit("candidate", candidate);
+  });
+
   socket.on("get-users", () => {
     socket.emit("users", User.getUsers(users, socket.id));
   });
@@ -27,14 +45,10 @@ io.on("connection", (socket) => {
   socket.on("set-username", (username) => {
     username = username.trim();
     if (Username.poolFull(usernames)) {
-      socket.emit(
-        "username-error",
-        "User pool full, wait for sometime or try again"
-      );
+      socket.emit("error", "User pool full, wait for sometime or try again");
     } else if (usernames.includes(username))
-      socket.emit("username-error", "Username taken, choose again");
-    else if (username === "")
-      socket.emit("username-error", "Choose a valid username");
+      socket.emit("error", "Username taken, choose again");
+    else if (username === "") socket.emit("error", "Choose a valid username");
     else {
       Username.setUsername(username, usernames, users, socket.id);
       socket.emit("username-success", username);
