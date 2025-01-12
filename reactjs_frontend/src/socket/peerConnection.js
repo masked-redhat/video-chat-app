@@ -24,6 +24,11 @@ const sendAnswer = async (
   offer,
   id
 ) => {
+  if (peerConnection.current && !peerConnection.current.closed()) {
+    socket.emit("error", "User is currently busy on another call", id);
+    return;
+  }
+
   peerConnection.current = new PeerConnection(localStream, remoteStream, id);
   setConn(peerConnection.current);
 

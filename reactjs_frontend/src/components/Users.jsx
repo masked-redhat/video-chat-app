@@ -1,7 +1,7 @@
 import { socket } from "../socket";
 import User from "./User";
 
-const Users = ({ users }) => {
+const Users = ({ users, conn, setMessage }) => {
   return (
     <div className="space-y-3">
       <hr />
@@ -20,7 +20,13 @@ const Users = ({ users }) => {
       <div className="flex flex-col gap-2 h-[32vh] overflow-auto">
         {users &&
           users.map((user) => (
-            <User username={user.username} key={user.username} id={user.id} />
+            <User
+              username={user.username}
+              key={user.username}
+              id={user.id}
+              conn={conn}
+              setMessage={setMessage}
+            />
           ))}
         {users && users.length === 0 && <p>No active users</p>}
       </div>

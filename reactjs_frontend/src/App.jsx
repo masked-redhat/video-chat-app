@@ -31,6 +31,11 @@ function App() {
 
   useEffect(() => {
     connect(setMessage, setUsername, setUsers);
+    socket.on("error", async (message, action) => {
+      setMessage(`Error: ${message}`);
+      if (action === "revert")
+        await peerConnect.endCall(peerConnection, setConn);
+    });
     initializeSetup(setLocalStream, setRemoteStream);
   }, []);
 
@@ -67,7 +72,7 @@ function App() {
 
   const handleEndCall = async () => {
     await peerConnect.endCall(peerConnection, setConn);
-    refresh()
+    refresh();
   };
 
   useEffect(() => {
@@ -101,7 +106,7 @@ function App() {
           <Video streamRef={remoteStreamElement} />
         </div>
         <CurrentUsername username={username} connection={conn} />
-        <Users users={users} />
+        <Users users={users} conn={peerConnection} setMessage={setMessage} />
       </main>
       <Footer />
     </div>
