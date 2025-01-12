@@ -62,6 +62,10 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("error", (message, socketId) => {
+    io.to(socketId).emit("error", message, "revert");
+  });
+
   socket.on("disconnect", () => {
     User.deleteUser(users, socket.id, usernames);
 
