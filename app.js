@@ -11,7 +11,6 @@ const server = createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://video-chat-app-fqc5.onrender.com/",
-    methods: ["get", "post"],
   },
 });
 const port = env.port;
