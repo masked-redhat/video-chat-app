@@ -4,12 +4,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import User from "./scripts/User.js";
 import Username from "./scripts/Username.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
 import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 const server = createServer(app);
@@ -21,13 +16,13 @@ const io = new Server(server, {
 });
 const port = env.port;
 
-app.use(express.static(path.join(__dirname, "reactjs_frontend/dist")));
+app.use(express.static(path.join('./', "reactjs_frontend/dist")));
 
 const users = {};
 const usernames = [];
 
 app.get("*", (_, res) => {
-  res.sendFile(path.join(__dirname, "reactjs_frontend/dist", "index.html"));
+  res.sendFile(path.join('./', "reactjs_frontend/dist", "index.html"));
 });
 
 io.on("connection", (socket) => {
